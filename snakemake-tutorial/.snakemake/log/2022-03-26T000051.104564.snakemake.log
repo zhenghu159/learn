@@ -1,0 +1,3 @@
+NameError in line 38 of /mnt/f/Github/learn/snakemake-tutorial/Snakefile:
+name 'SAMPLES' is not defined
+  File "/mnt/f/Github/learn/snakemake-tutorial/Snakefile", line 38, in <module>
