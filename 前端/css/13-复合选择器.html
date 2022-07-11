@@ -7,20 +7,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>复合选择器</title>
     <style>
-        .nav>a {
+        /* 把获得光标的 input 表单元素选取出来 */
+        input:focus {
+            background-color: pink;
             color: red;
         }
     </style>
 </head>
 
 <body>
-    <div class="nav">
-        <a href="#">我是儿子</a>
-        <p>
-            <a href="#">我是孙子</a>
-        </p>
-    </div>
-
+    <input type="text">
+    <input type="text">
+    <input type="text">
 </body>
 
 </html>
