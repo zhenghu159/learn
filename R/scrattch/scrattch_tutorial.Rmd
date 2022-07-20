@@ -9,20 +9,20 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = T, warning = F)
+knitr::opts_chunk$set(echo = T, warning = FALSE)
 ```
 
 # 1 Data Selection
 ## 1.1 Loading libraries
 首先，我们需要加载 `scattch.hicat` 和 `tasic2016data` 包，以及 `Matrix` 和 `matrixStats`，我们将使用它们进行一些计算：
 
-```{r message = F}
-library(tasic2016data)
-library(scrattch.hicat)
-library(dendextend)
-library(dplyr)
-library(matrixStats)
-library(Matrix)
+```{r}
+suppressMessages(library(tasic2016data))
+suppressMessages(library(scrattch.hicat))
+suppressMessages(library(dendextend))
+suppressMessages(library(dplyr))
+suppressMessages(library(matrixStats))
+suppressMessages(library(Matrix))
 ```
 
 ## 1.2 tasic2016data overview
@@ -346,3 +346,225 @@ de.genes <- display.result$de.genes
 ```
 
 此时，我们可以检查热图以手动检查 clusters 中是否存在奇怪的分组、doublets 或异常值。
+
+
+--------------------------------------------------------------------------------
+
+
+# 6 Bootstrapping and Consensus
+迭代聚类 pipeline 往往会产生许多 clusters，当我们尝试以更精细的分辨率拆分 clusters 时，会增加不确定性。  
+
+我们通过对 80% 的随机 subsampled 细胞执行多次聚类来解决这个问题， 跟踪每个细胞与其他细胞聚类的频率(细胞-细胞共聚类矩阵)，并使用细胞-细胞共聚类的这
+些频率来推断 consensus clustering。我们还计算统计数据来评估我们对每对 consensus 
+clusters 之间分离的置信度。  
+
+`run_consensus_clust()` 是一个方便的包装函数，用于执行这个引导的、迭代的聚类过程。  
+
+为了更快地执行，我们使用“PCA”模式。
+
+```{r}
+set.seed(12345)
+result <- run_consensus_clust(norm.dat[,select.cells], 
+                              select.cells = select.cells,
+                              niter = 100, 
+                              de.param = de.param, 
+                              rm.eigen = rm.eigen, 
+                              dim.method = "pca", 
+                              output_dir = "subsample_PCA")
+```
+
+同样，我们将使用 `compare_annotate()` 将这些结果与参考进行比较。
+
+```{r}
+compare.result <- compare_annotate(result$cl.result$cl, ref.cl, ref.cl.df)
+compare.result$g
+```
+这些聚类结果不是直接从基因 x 样本测量中得出的，而是根据细胞在同一 cluster 中一起
+发现的频率得出的。我们可以使用 `plot_co_matrix()` 查看这个联合聚类矩阵：
+
+```{r}
+consensus.cl <- compare.result$cl
+consensus.cl.df <- compare.result$cl.df
+
+co.ratio <- result$co.result$cl.mat
+co.matrix.plot <- plot_co_matrix(co.ratio, 
+                                 consensus.cl, 
+                                 max.cl.size = 50)
+```
+在这里，我们可以看到共聚类矩阵的块结构。  
+最后，我们可以删除因子级别，以获得每个细胞的 cluster 结果对象，以便与其他函数一起使用。
+
+```{r}
+cl.clean <- droplevels(consensus.cl)
+
+head(cl.clean)
+```
+
+## 6.1 Scaling with parallel computation
+如果您有一台多核计算机，则可以通过将 **mc.cores** 设置为您可以使用的内核数来并行
+运行此功能。  
+请注意，这可能会导致大量并行进程的高内存消耗。尝试先使用少量内核来监控内存消耗：
+
+```{r}
+result <- run_consensus_clust(norm.dat, 
+                              niter = 20, 
+                              de.param = de.param, 
+                              rm.eigen = rm.eigen, 
+                              dim.method = "PCA", 
+                              output_dir = "subsample_PCA", 
+                              mc.cores = 4)
+```
+
+
+--------------------------------------------------------------------------------
+
+
+# 7 Dendrograms and t-SNE
+## 7.1 Representing hierarchies with dendrograms
+我们发现使用层次结构对不同分辨率的细胞类型进行分类很有帮助。为了构建 clusters 的
+树状图，我们使用基于 `select_markers()` 和 `build_dend()` 筛选的在每对 clusters 
+之间中位数表达值差异最大的 top50 基因的相关矩阵。  
+
+可以使用 `pvclust` 包实现的引导方法估计每个分支点的置信度，该包由 `build_dend()` 
+函数自动调用：
+
+```{r}
+select.markers <- select_markers(norm.dat, 
+                                cl.clean, 
+                                de.genes = de.genes,
+                                n.markers = 50)
+
+marker.genes <- select.markers$markers
+de.genes <- select.markers$de.genes
+
+cl.med <- get_cl_medians(norm.dat[marker.genes,], 
+                         cl.clean)
+
+##The prefered order for the leaf nodes.
+l.rank <- setNames(1:nrow(consensus.cl.df), 
+                   row.names(consensus.cl.df))
+
+##Color of the leaf nodes.
+l.color <- setNames(as.character(consensus.cl.df$cluster_color), row.names(consensus.cl.df))
+
+# Build the dendrogram
+dend.result <- build_dend(cl.med[,levels(cl.clean)],
+                          l.rank, 
+                          l.color,
+                          nboot = 100)
+dend <- dend.result$dend
+###attach cluster labels to the leaves of the tree 
+dend.labeled <- dend
+labels(dend.labeled) <- consensus.cl.df[labels(dend), "cluster_label"]
+plot(dend.labeled)
+```
+现在，我们可以更好地看到 clusters 的层次结构，这种层次结构的置信度分数由线条的权
+重和颜色表示，粗黑线最有置信度，红线居中，灰线置信度较低。  
+
+我们可以使用 dendrogram 结构对 cluster 进行重新排序，以便在其他图中使用：
+
+```{r}
+cl.clean <- setNames(factor(as.character(cl.clean), levels = labels(dend)), names(cl.clean))
+cl.df.clean <- cl.df[levels(cl.clean),]
+```
+
+我们还可以绘制用于反应层次聚类的聚类级别的相关矩阵：
+
+```{r}
+cl.cor <- dend.result$cl.cor
+row.names(cl.cor) <- colnames(cl.cor) <- consensus.cl.df[row.names(cl.cor), "cluster_label"]
+heatmap.3(cl.cor,
+          Rowv = dend, Colv = dend,
+          trace = "none", col = heat.colors(100),cexRow=0.8, cexCol=0.8,
+          breaks = c(-0.2, 0.2, seq(0.2, 1, length.out = 99)))
+```
+
+## 7.2 t-SNE plots
+将我们的高维数据集投影到二维是检查细胞类型聚类的非常有用的方法。t-SNE 是一种流行 的方法，它可以很好地将相似的细胞分组在一起，并将非常不同的细胞分开。  
+
+我们可以使用函数 `plot_tsne_cl()` 在图上生成 t-SNE 坐标和覆盖 cluster 标签：
+
+```{r}
+tsne.result <- plot_tsne_cl(norm.dat, marker.genes, consensus.cl, consensus.cl.df, fn.size=5, cex=1)
+```
+
+```{r}
+tsne.df <- tsne.result$tsne.df
+tsne.result$g
+```
+或者，我们可以使用 `plot_tsne_gene()` 在 t-SNE 坐标上绘制一组基因的表达：
+
+```{r}
+tsne.df <- tsne.result$tsne.df
+## 6330527O06Rik is alias for Lamp5, and A930038C07Rik is alais for Ndnf
+markers <- c("Vip","6330527O06Rik","Sncg","Cxcl14","Gpc3","A930038C07Rik")
+gene.plots <- plot_tsne_gene(tsne.df, norm.dat, markers)
+multiplot(plotlist = gene.plots, cols = 3)
+```
+
+
+--------------------------------------------------------------------------------
+
+
+# 8 Mapping between datasets
+`scrattch.hicat` 还提供了一些跨数据集映射的函数。例如，您可能希望使用来自 SMART-seq 数据集的先前注释类型来注释 10X Genomics 数据中的细胞。  
+
+为了演示，我们将展示如何从几个 Patch-seq 细胞中获取数据，这些细胞往往有些噪声，并
+将它们注册到我们的 Tasic, et al. (2016) clusters。  
+
+此 Patch-seq 数据来自 Cadwell, et al (2016)，该数据通过在膜片钳电生理记录后提取 
+scRNA-seq 的细胞内容物，分析了小鼠皮层 L1 中相同细胞的电生理学、形态学和转录组学。  
+
+对于这个演示，我们已经加载了一个矩阵，其中包含其中 10 个细胞的转录组数据 (as cadwell_2016_data)。  
+
+我们可以使用 `map_sampling()` 函数映射这些细胞，该函数使用参考数据集训练一个质心分类器， 其中随机选择 80% 的标记基因，然后将测试数据与参考集匹配。这是自举 100 次以获得对
+分类稳健性的估计。
+
+```{r}
+marker_results <- select_markers(norm.dat, ref.cl)
+marker_genes <- marker_results$markers
+
+norm.cadwell_2016_data <- log2(cpm(cadwell_2016_data) + 1)
+
+mapping_results <- map_sampling(train.dat    = norm.dat,
+                                train.cl     = ref.cl,
+                                test.dat     = norm.cadwell_2016_data,
+                                markers      = marker_genes,
+                                markers.perc = 0.8,
+                                iter         = 100)
+```
+这将返回一个具有最佳匹配的表和一个表，其中包含每个细胞分配给每个 cluster 的频率。
+
+```{r}
+mapping_results$map.df
+mapping_results$map.freq
+```
+
+我们可以加入我们在教程开始时生成的 ref.cl.df，以添加来自 Tasic, et al. (2016) 的
+现有注释。
+
+```{r}
+map.df <- mapping_results$map.df %>%
+  mutate(pred.cl = as.numeric(as.character(pred.cl))) %>%
+  left_join(ref.cl.df, by = c("pred.cl" = "cluster_id"))
+
+map.df
+
+```
+
+```{r}
+table(map.df$cluster_label)
+```
+
+由此，我们可以看到大多数细胞映射到 Smad3 或 Ndnf clusters，它们对应于 L1 神经胶
+质状中间神经元。这与 Cadwell, et al. (2016) 提出的这些细胞的位置、形态和电生理学
+非常匹配。
+
+
+
+
+
+
+
+
+
