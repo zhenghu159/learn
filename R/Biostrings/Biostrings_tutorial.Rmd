@@ -1,0 +1,177 @@
+---
+title: "Biostrings Tutorial"
+author: 'ZhengHu'
+date: '2022-07-20'
+output: 
+  html_notebook: 
+    toc: yes
+    css: C:/Users/13081/OneDrive - webmail.hzau.edu.cn/Github/learn/R/notebook.css
+    number_sections: yes
+---
+
+# A short presentation of the basic classes defined in Biostrings 2
+
+## Introduction
+本文档简要介绍了 `Biostrings 2` 包中实现的新类集。
+
+
+--------------------------------------------------------------------------------
+
+
+## The XString class and its subsetting operator
+XString 实际上是一个虚拟类，因此无法实例化。只有 BString、DNAString、RNAString 和 
+AAString 的子类（或子类型）可以。这些类是 XString 类的直接扩展（没有额外的 slot）。
+A frst BString object:
+```{r}
+library(Biostrings)
+```
+
+```{r}
+b <- BString("I am a BString object")
+b
+length(b)
+```
+
+A DNAString object:
+```{r}
+d <- DNAString("TTGAAAA-CTC-N")
+d
+length(d)
+```
+
+与 BString 对象的区别是：  
+(1) 只允许来自 UPAC extended genetic alphabet 和 gap letter (-)  
+(2) 传递给 DNAString 函数的参数中的每个字母在存储到 DNAString 对象之前都以特殊方式编码。  
+Access to the individual letters:
+```{r}
+d[7:12]
+```
+
+事实上，XString 对象的子集运算符效率不高，应该始终使用 `subseq()` 方法从大字符串中
+提取子字符串：
+```{r}
+dd <- subseq(d, start=4, end=7)
+dd
+```
+
+要将 XString 对象转储为 character vector，请使用 `toString()` 方法：
+```{r}
+toString(dd)
+```
+
+
+--------------------------------------------------------------------------------
+
+
+## The == binary operator for XString objects
+```{r}
+bb <- subseq(b, 3, 6)
+bb
+```
+```{r}
+bb == "am a"
+```
+
+
+--------------------------------------------------------------------------------
+
+
+## The XStringViews class and its subsetting operators [ and [[
+一个 XStringViews 对象包含一组关于同一个 XString 对象的视图，称为主题字符串。
+这是一个具有 4 个视图的 XStringViews 对象：
+```{r}
+v4 <- Views(d, start=3:0, end=5:8)
+v4
+```
+
+```{r}
+length(v4)
+```
+
+您可以从 XStringViews 对象中选择视图子集：
+```{r}
+v4[4:2]
+```
+
+
+--------------------------------------------------------------------------------
+
+
+## A few more XStringViews objects
+
+## The == binary operator for XStringViews objects
+
+## The start, end and width methods
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+
+
+
+
+# Pairwise Sequence Alignments
+
+## Introduction
+在本文档中，我们说明了如何使用 `Biostrings` 包通过 `pairwiseAlignment()` 函数执行
+成对序列比对。此函数使用固定或基于质量的替换评分方案以全局、局部或重叠（ends-free）
+方式将一组模式字符串与主题字符串对齐，有或没有仿射间隙。
+
+## Pairwise Sequence Alignment Problems
+The (Needleman-Wunsch) global、The (Smith-Waterman) local, and (ends-free) overlap 
+pairwise sequence alignment 问题描述如下。
+
+## Main Pairwise Sequence Alignment Function
+`pairwiseAlignment()` 函数解决了上面提到的成对序列比对问题。它将模式参数中指定的
+一个或多个字符串与主题参数中指定的单个字符串比对。
+```{r}
+library(Biostrings)
+```
+
+```{r}
+pairwiseAlignment(pattern = c("succeed", "precede"), subject = "supersede")
+```
+
+通过将 type 参数指定为 “global”、“local”、“overlap”、“global-local” 和 “local-global”  之一来设置成对序列比对的类型。
+```{r}
+pairwiseAlignment(pattern = c("succeed", "precede"), subject = "supersede", type = "local")
+```
+
+间隙惩罚由 gapOpening 和 gapExtension 参数调节。
+```{r}
+pairwiseAlignment(pattern = c("succeed", "precede"), subject = "supersede", gapOpening = 0, gapExtension = 1)
+```
+
+替换评分方案使用三个参数设置，其中两个是基于质量的相关（pattern-Quality，subjectQuality），
+一个是固定替换相关的（substitutionMatrix）。当替换分数通过字符配对固定时，
+substituionMatrix 参数采用具有适当字母的矩阵作为维度名称。`nucleotideSubstitutionMatrix()`
+函数将简单的匹配和错配分数转换为 IUPAC 核苷酸代码的全谱。
+```{r}
+submat <- matrix(-1, nrow = 26, ncol = 26, dimnames = list(letters, letters))
+diag(submat) <- 0
+pairwiseAlignment(pattern = c("succeed", "precede"), subject = "supersede", substitutionMatrix = submat, gapOpening = 0, gapExtension = 1)
+```
+
+pairwiseAlignment 函数的最后一个参数 scoreOnly 接受一个逻辑值来指定是否只返回成对
+序列比对分数。如果 scoreOnly 为 FALSE，则返回具有最大对齐分数的成对比对。如果存在 多个成对比对的最大比对分数，则返回沿着 subject 的第一个比对。如果在所选 subject 
+位置有多个具有最大比对分数的成对比对，则在比对不匹配的每个位置上，优先插入/删除。
+例如：`pattern: [1] ATTA; subject: [1] AT-A` 和 `pattern: [1] ATTA; subject: [1] A-TA`
+有相同的最大比对的分时，优先选择前者。
+```{r}
+submat <- matrix(-1, nrow = 26, ncol = 26, dimnames = list(letters, letters))
+diag(submat) <- 0
+pairwiseAlignment(pattern = c("succeed", "precede"), subject = "supersede", substitutionMatrix = submat, gapOpening = 0, gapExtension = 1, scoreOnly = TRUE)
+```
+
+
+
+
+
+
+
+
+
+

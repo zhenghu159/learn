@@ -6,18 +6,66 @@ output:
   html_notebook: 
     toc: yes
     css: C:/Users/13081/OneDrive - webmail.hzau.edu.cn/Github/learn/R/notebook.css
+    number_sections: yes
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+# Introduction
+msa: An R Package for Multiple Sequence Alignment
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
 
+--------------------------------------------------------------------------------
+
+
+# Installation
 ```{r}
-plot(cars)
+if (!requireNamespace("BiocManager", quietly=TRUE))
+  install.packages("BiocManager")
+BiocManager::install("msa")
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+```{r}
+library(msa)
+```
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+文件 `texshade.sty` 随 `msa package` 一起提供。要确定文件的位置，请在 R 会话中输
+入以下命令：
+```{r}
+system.file("tex", "texshade.sty", package="msa")
+```
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+--------------------------------------------------------------------------------
+
+
+# msa for the Impatient
+为了说明基本工作流程，本节提供了一个带有默认设置的简单示例，并且不详细介绍每个步
+骤。让我们首先从 msa 包提供的示例文件中加载氨基酸序列：
+```{r}
+mySequenceFile <- system.file("examples", "exampleAA.fasta", package="msa")
+mySequences <- readAAStringSet(mySequenceFile)
+mySequences
+```
+
+现在我们已经加载了序列，我们可以运行 `msa()` 函数，默认情况下，使用默认参数运行 
+ClustalW: 
+```{r}
+myFirstAlignment <- msa(mySequences)
+## use default substitution matrix
+myFirstAlignment
+```
+
+显然，默认的打印功能为了紧凑的输出而缩短了 alignment。msa 包提供的 `print()` 函数 提供了一些自定义输出的方法，例如，显示整个对齐拆分为多个子序列块：
+```{r}
+print(myFirstAlignment, show="complete")
+```
+
+msa 包还提供了函数 `msaPrettyPrint()`，它允许使用 LATEX 包 TEXshade 漂亮地打印多
+个 alignments。
+
+
+
+
+
+
+
+

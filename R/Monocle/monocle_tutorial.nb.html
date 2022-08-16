@@ -9,9 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="ZhengHu" />
 
-<meta name="date" content="2022-07-20" />
 
 <title>R Notebook</title>
 
@@ -1766,224 +1764,143 @@ pre code {
 
 
 <h1 class="title toc-ignore">R Notebook</h1>
-<h4 class="author">ZhengHu</h4>
-<h4 class="date">2022-07-20</h4>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#introduction"><span class="toc-section-number">1</span>
-Introduction</a></li>
-<li><a href="#installation"><span class="toc-section-number">2</span>
-Installation</a></li>
-<li><a href="#msa-for-the-impatient"><span class="toc-section-number">3</span> msa for the Impatient</a></li>
+<li><a href="#installing-monocle-3"><span class="toc-section-number">1</span> Installing Monocle 3</a>
+<ul>
+<li><a href="#required-software"><span class="toc-section-number">1.1</span> Required software</a></li>
+<li><a href="#testing-the-installation"><span class="toc-section-number">1.2</span> Testing the installation</a></li>
+</ul></li>
+<li><a href="#getting-started-with-monocle-3"><span class="toc-section-number">2</span> Getting started with Monocle 3</a>
+<ul>
+<li><a href="#load-monocle-3"><span class="toc-section-number">2.1</span> Load Monocle 3</a></li>
+<li><a href="#loading-your-data"><span class="toc-section-number">2.2</span> Loading your data</a></li>
+<li><a href="#the-cell_data_set-class"><span class="toc-section-number">2.3</span> The cell_data_set class</a></li>
+<li><a href="#generate-a-cell_data_set"><span class="toc-section-number">2.4</span> Generate a cell_data_set</a></li>
+</ul></li>
 </ul>
 </div>
 
 <!-- rnb-text-begin -->
-<div id="introduction" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p>msa: An R Package for Multiple Sequence Alignment</p>
-<hr />
+<div id="installing-monocle-3" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Installing Monocle
+3</h1>
+<div id="required-software" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Required
+software</h2>
+<p>To install Bioconductor, open R and run:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaWYgKCFyZXF1aXJlTmFtZXNwYWNlKFwiQmlvY01hbmFnZXJcIiwgcXVpZXRseSA9IFRSVUUpKVxuaW5zdGFsbC5wYWNrYWdlcyhcIkJpb2NNYW5hZ2VyXCIpXG5CaW9jTWFuYWdlcjo6aW5zdGFsbCh2ZXJzaW9uID0gXCIzLjE0XCIpXG5gYGAifQ== -->
+<pre class="r"><code>if (!requireNamespace(&quot;BiocManager&quot;, quietly = TRUE))
+install.packages(&quot;BiocManager&quot;)
+BiocManager::install(version = &quot;3.14&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Next, install a few Bioconductor dependencies that aren’t
+automatically installed:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQmlvY01hbmFnZXI6Omluc3RhbGwoYygnQmlvY0dlbmVyaWNzJywgJ0RlbGF5ZWRBcnJheScsICdEZWxheWVkTWF0cml4U3RhdHMnLFxuICAgICAgICAgICAgICAgICAgICAgICAnbGltbWEnLCAnbG1lNCcsICdTNFZlY3RvcnMnLCAnU2luZ2xlQ2VsbEV4cGVyaW1lbnQnLFxuICAgICAgICAgICAgICAgICAgICAgICAnU3VtbWFyaXplZEV4cGVyaW1lbnQnLCAnYmF0Y2hlbG9yJywgJ01hdHJpeC51dGlscycsXG4gICAgICAgICAgICAgICAgICAgICAgICdIREY1QXJyYXknLCAndGVycmEnLCAnZ2dyYXN0cicpKVxuYGBgIn0= -->
+<pre class="r"><code>BiocManager::install(c(&#39;BiocGenerics&#39;, &#39;DelayedArray&#39;, &#39;DelayedMatrixStats&#39;,
+                       &#39;limma&#39;, &#39;lme4&#39;, &#39;S4Vectors&#39;, &#39;SingleCellExperiment&#39;,
+                       &#39;SummarizedExperiment&#39;, &#39;batchelor&#39;, &#39;Matrix.utils&#39;,
+                       &#39;HDF5Array&#39;, &#39;terra&#39;, &#39;ggrastr&#39;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now, install monocle3 through the cole-trapnell-lab GitHub,
+execute:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5zdGFsbC5wYWNrYWdlcyhcImRldnRvb2xzXCIpXG5kZXZ0b29sczo6aW5zdGFsbF9naXRodWIoJ2NvbGUtdHJhcG5lbGwtbGFiL21vbm9jbGUzJylcbmBgYCJ9 -->
+<pre class="r"><code>install.packages(&quot;devtools&quot;)
+devtools::install_github(&#39;cole-trapnell-lab/monocle3&#39;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
-<div id="installation" class="section level1" number="2">
-<h1><span class="header-section-number">2</span> Installation</h1>
+<div id="testing-the-installation" class="section level2" number="1.2">
+<h2><span class="header-section-number">1.2</span> Testing the
+installation</h2>
+<p>To ensure that Monocle 3 was installed correctly, start a new R
+session and run:</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaWYgKCFyZXF1aXJlTmFtZXNwYWNlKFwiQmlvY01hbmFnZXJcIiwgcXVpZXRseT1UUlVFKSlcbiAgaW5zdGFsbC5wYWNrYWdlcyhcIkJpb2NNYW5hZ2VyXCIpXG5CaW9jTWFuYWdlcjo6aW5zdGFsbChcIm1zYVwiKVxuYGBgIn0= -->
-<pre class="r"><code>if (!requireNamespace(&quot;BiocManager&quot;, quietly=TRUE))
-  install.packages(&quot;BiocManager&quot;)
-BiocManager::install(&quot;msa&quot;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShtb25vY2xlMylcbmBgYCJ9 -->
+<pre class="r"><code>library(monocle3)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShtc2EpXG5gYGAifQ== -->
-<pre class="r"><code>library(msa)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>文件 <code>texshade.sty</code> 随 <code>msa package</code>
-一起提供。要确定文件的位置，请在 R 会话中输 入以下命令：</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3lzdGVtLmZpbGUoXCJ0ZXhcIiwgXCJ0ZXhzaGFkZS5zdHlcIiwgcGFja2FnZT1cIm1zYVwiKVxuYGBgIn0= -->
-<pre class="r"><code>system.file(&quot;tex&quot;, &quot;texshade.sty&quot;, package=&quot;msa&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiRDovMS5zdHVkeS9SL1ItNC4yLjAvbGlicmFyeS9tc2EvdGV4L3RleHNoYWRlLnN0eVwiXG4ifQ== -->
-<pre><code>[1] &quot;D:/1.study/R/R-4.2.0/library/msa/tex/texshade.sty&quot;</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<hr />
 </div>
-<div id="msa-for-the-impatient" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> msa for the
-Impatient</h1>
-<p>为了说明基本工作流程，本节提供了一个带有默认设置的简单示例，并且不详细介绍每个步
-骤。让我们首先从 msa 包提供的示例文件中加载氨基酸序列：</p>
+</div>
+<div id="getting-started-with-monocle-3" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Getting started with
+Monocle 3</h1>
+<div id="load-monocle-3" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Load Monocle 3</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlTZXF1ZW5jZUZpbGUgPC0gc3lzdGVtLmZpbGUoXCJleGFtcGxlc1wiLCBcImV4YW1wbGVBQS5mYXN0YVwiLCBwYWNrYWdlPVwibXNhXCIpXG5teVNlcXVlbmNlcyA8LSByZWFkQUFTdHJpbmdTZXQobXlTZXF1ZW5jZUZpbGUpXG5teVNlcXVlbmNlc1xuYGBgIn0= -->
-<pre class="r"><code>mySequenceFile &lt;- system.file(&quot;examples&quot;, &quot;exampleAA.fasta&quot;, package=&quot;msa&quot;)
-mySequences &lt;- readAAStringSet(mySequenceFile)
-mySequences</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShtb25vY2xlMylcblxuIyBUaGUgdHV0b3JpYWwgc2hvd24gYmVsb3cgYW5kIG9uIHN1YnNlcXVlbnQgcGFnZXMgdXNlcyB0d28gYWRkaXRpb25hbCBwYWNrYWdlczpcbmxpYnJhcnkoZ2dwbG90MilcbmxpYnJhcnkoZHBseXIpXG5gYGAifQ== -->
+<pre class="r"><code>library(monocle3)
+
+# The tutorial shown below and on subsequent pages uses two additional packages:
+library(ggplot2)
+library(dplyr)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQUFTdHJpbmdTZXQgb2JqZWN0IG9mIGxlbmd0aCA5OlxuICAgIHdpZHRoIHNlcSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIG5hbWVzICAgICAgICAgICAgICAgXG5bMV0gICA0NTIgTVNUQVZMRU5QR0xHUktMU0RGR1FFVFNZSUVETkNOUU5HLi4uSUVWTEROVFFRTEtJTEFEU0lOU0VJR0lMQ1NBTFFLSUsgUEg0SF9Ib21vX3NhcGllbnNcblsyXSAgIDQ1MyBNQUFWVkxFTkdWTFNSS0xTREZHUUVUU1lJRUROU05RTkcuLi5FVkxETlRRUUxLSUxBRFNJTlNFVkdJTENOQUxRS0lLUyBQSDRIX1JhdHR1c19ub3J2ZS4uLlxuWzNdICAgNDUzIE1BQVZWTEVOR1ZMU1JLTFNERkdRRVRTWUlFRE5TTlFORy4uLkVWTEROVFFRTEtJTEFEU0lOU0VWR0lMQ0hBTFFLSUtTIFBINEhfTXVzX211c2N1bHVzXG5bNF0gICAyOTcgTU5EUkFERlZWUERJVFRSS05WR0xTSERBTkRGVExQUVBMLi4uQURBUVBXR0FHRFZBUERETFZMTkFHRFJRR1dBRFRFRFYgUEg0SF9DaHJvbW9iYWN0ZXIuLi5cbls1XSAgIDI2MiBNS1RUUVlWQVJRUERETkdGSUhZUEVURUhRVldOVExJVFIuLi5MRlFMQVFFRElNQUxWSEVBTVJMR0xIQVBMRlBQS1FBQSBQSDRIX1BzZXVkb21vbmFzXy4uLlxuWzZdICAgNDUxIE1TQUxWTEVTUkFMR1JLTFNERkdRRVRTWUlFR05TRFFOQS4uLklFVkxETlRRUUxLSUxBRFNJU1NFVkVJTENTQUxRS0xLIFBINEhfQm9zX3RhdXJ1c1xuWzddICAgMzEzIE1BSUFUUFRTQUFQVFBBUEFHRlRHVExUREtMUkVRRkFFRy4uLkdUTFBURkdBR0RWVkRHREFWTE5BR1RSRUdXQURUQURJIFBINEhfUmFsc3RvbmlhX3NvLi4uXG5bOF0gICAyOTQgTVNHREdMU05HUFBQR0FSUERXVElEUUdXRVRZVFFBRUhELi4uR1ZBRUlWUEdEQVZMVFJHVFFBWUFUQUdHUkxBR0FBQUcgUEg0SF9DYXVsb2JhY3Rlcl8uLi5cbls5XSAgIDI3NSBNU1ZBRVlBUkRDQUFRR0xSR0RZU1ZDUkFERlRWQVFEWUQuLi5TRkRBTFJEQUZRVEFERkVBSVZBUlJLRFFLQUxEUEFUViBQSDRIX1JoaXpvYml1bV9sb3RpXG4ifQ== -->
-<pre><code>AAStringSet object of length 9:
-    width seq                                                                  names               
-[1]   452 MSTAVLENPGLGRKLSDFGQETSYIEDNCNQNG...IEVLDNTQQLKILADSINSEIGILCSALQKIK PH4H_Homo_sapiens
-[2]   453 MAAVVLENGVLSRKLSDFGQETSYIEDNSNQNG...EVLDNTQQLKILADSINSEVGILCNALQKIKS PH4H_Rattus_norve...
-[3]   453 MAAVVLENGVLSRKLSDFGQETSYIEDNSNQNG...EVLDNTQQLKILADSINSEVGILCHALQKIKS PH4H_Mus_musculus
-[4]   297 MNDRADFVVPDITTRKNVGLSHDANDFTLPQPL...ADAQPWGAGDVAPDDLVLNAGDRQGWADTEDV PH4H_Chromobacter...
-[5]   262 MKTTQYVARQPDDNGFIHYPETEHQVWNTLITR...LFQLAQEDIMALVHEAMRLGLHAPLFPPKQAA PH4H_Pseudomonas_...
-[6]   451 MSALVLESRALGRKLSDFGQETSYIEGNSDQNA...IEVLDNTQQLKILADSISSEVEILCSALQKLK PH4H_Bos_taurus
-[7]   313 MAIATPTSAAPTPAPAGFTGTLTDKLREQFAEG...GTLPTFGAGDVVDGDAVLNAGTREGWADTADI PH4H_Ralstonia_so...
-[8]   294 MSGDGLSNGPPPGARPDWTIDQGWETYTQAEHD...GVAEIVPGDAVLTRGTQAYATAGGRLAGAAAG PH4H_Caulobacter_...
-[9]   275 MSVAEYARDCAAQGLRGDYSVCRADFTVAQDYD...SFDALRDAFQTADFEAIVARRKDQKALDPATV PH4H_Rhizobium_loti</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>现在我们已经加载了序列，我们可以运行 <code>msa()</code>
-函数，默认情况下，使用默认参数运行 ClustalW:</p>
+</div>
+<div id="loading-your-data" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Loading your
+data</h2>
+<p>Monocle 3 以细胞基因表达矩阵作为输入。Monocle 3 设计用于绝对转录计数
+(例如来自 UMI 实验)。Monocle 3 使用 Cell Ranger 生成的转录计数矩阵
+“out-of-the-box”，该软件管道用于分析 10X Genomics Chromium
+仪器的实验。Monocle 3 还可以很好地处理来自其他 RNA-Seq 工作流程（例如
+sci-RNA-Seq）和 Biorad ddSEQ 等仪器的数据。</p>
+</div>
+<div id="the-cell_data_set-class" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> The cell_data_set
+class</h2>
+<p>Monocle 在 <code>cell_data_set</code>
+类的对象中保存单细胞表达数据。该类派生自 Bioconductor
+<code>SingleCellExperiment</code> 类，该类为使用 Bioconductor
+分析其他单细胞实验的人提供熟悉的通用接口。该类需要三个输入文件：<br />
+<code>expression_matrix</code>,表达量的数值矩阵，其中行是基因，列是细胞<br />
+<code>cell_metadata</code>,一个数据框，其中行是细胞，列是细胞的属性(如细胞类型、培养条件、捕获天数等。)<br />
+<code>gene_metadata</code>,一个数据框，其中行是特征(例如基因)，列是基因属性，如生物型、gc含量等。</p>
+</div>
+<div id="generate-a-cell_data_set" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Generate a
+cell_data_set</h2>
+<p>您可以创建一个新的 <code>cell_data_set</code> (CDS)
+对象，如下所示：</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlGaXJzdEFsaWdubWVudCA8LSBtc2EobXlTZXF1ZW5jZXMpXG5gYGAifQ== -->
-<pre class="r"><code>myFirstAlignment &lt;- msa(mySequences)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoidXNlIGRlZmF1bHQgc3Vic3RpdHV0aW9uIG1hdHJpeFxuIn0= -->
-<pre><code>use default substitution matrix</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgdXNlIGRlZmF1bHQgc3Vic3RpdHV0aW9uIG1hdHJpeFxubXlGaXJzdEFsaWdubWVudFxuYGBgIn0= -->
-<pre class="r"><code>## use default substitution matrix
-myFirstAlignment</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiQ0xVU1RBTCAyLjEgIFxuXG5DYWxsOlxuICAgbXNhKG15U2VxdWVuY2VzKVxuXG5Nc2FBQU11bHRpcGxlQWxpZ25tZW50IHdpdGggOSByb3dzIGFuZCA0NTYgY29sdW1uc1xuICAgIGFsbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZXNcblsxXSBNQUFWVkxFTkdWTFNSS0xTREZHUUVUU1lJRUROU05RTkdBSS4uLlFSVkVWTEROVFFRTEtJTEFEU0lOU0VWR0lMQ05BTFFLSUtTIFBINEhfUmF0dHVzX25vcnZlLi4uXG5bMl0gTUFBVlZMRU5HVkxTUktMU0RGR1FFVFNZSUVETlNOUU5HQVYuLi5RUlZFVkxETlRRUUxLSUxBRFNJTlNFVkdJTENIQUxRS0lLUyBQSDRIX011c19tdXNjdWx1c1xuWzNdIE1TVEFWTEVOUEdMR1JLTFNERkdRRVRTWUlFRE5DTlFOR0FJLi4uUVJJRVZMRE5UUVFMS0lMQURTSU5TRUlHSUxDU0FMUUtJSy0gUEg0SF9Ib21vX3NhcGllbnNcbls0XSBNU0FMVkxFU1JBTEdSS0xTREZHUUVUU1lJRUdOU0RRTi1BVi4uLlFSSUVWTEROVFFRTEtJTEFEU0lTU0VWRUlMQ1NBTFFLTEstIFBINEhfQm9zX3RhdXJ1c1xuWzVdIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLi4uQUdEVkFQRERMVkxOQUdEUlFHV0FEVEVEVi0tLS0tLS0tLS0gUEg0SF9DaHJvbW9iYWN0ZXIuLi5cbls2XSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS4uLkFHRFZWREdEQVZMTkFHVFJFR1dBRFRBREktLS0tLS0tLS0tIFBINEhfUmFsc3RvbmlhX3NvLi4uXG5bN10gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0uLi5WQUVJVlBHREFWTFRSR1QtUUFZQVRBR0dSTEFHQUFBRy0tLSBQSDRIX0NhdWxvYmFjdGVyXy4uLlxuWzhdIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLi4uQVBMRlBQS1FBQS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gUEg0SF9Qc2V1ZG9tb25hc18uLi5cbls5XSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS4uLlBBVFYtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFBINEhfUmhpem9iaXVtX2xvdGlcbkNvbiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS4uLj8/Pz9WP0Q/Pz8/Pz8/Pz8/Pz8/Pz8/P0lMPz9BPz8/LS0tIENvbnNlbnN1cyBcbiJ9 -->
-<pre><code>CLUSTAL 2.1  
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBMb2FkIHRoZSBkYXRhXG5leHByZXNzaW9uX21hdHJpeCA8LSByZWFkUkRTKHVybChcImh0dHBzOi8vZGVwdHMud2FzaGluZ3Rvbi5lZHU6L3RyYXBuZWxsLWxhYi9zb2Z0d2FyZS9tb25vY2xlMy9jZWxlZ2Fucy9kYXRhL2Nhb19sMl9leHByZXNzaW9uLnJkc1wiKSlcbmNlbGxfbWV0YWRhdGEgPC0gcmVhZFJEUyh1cmwoXCJodHRwczovL2RlcHRzLndhc2hpbmd0b24uZWR1Oi90cmFwbmVsbC1sYWIvc29mdHdhcmUvbW9ub2NsZTMvY2VsZWdhbnMvZGF0YS9jYW9fbDJfY29sRGF0YS5yZHNcIikpXG5nZW5lX2Fubm90YXRpb24gPC0gcmVhZFJEUyh1cmwoXCJodHRwczovL2RlcHRzLndhc2hpbmd0b24uZWR1Oi90cmFwbmVsbC1sYWIvc29mdHdhcmUvbW9ub2NsZTMvY2VsZWdhbnMvZGF0YS9jYW9fbDJfcm93RGF0YS5yZHNcIikpXG5cblxuIyBNYWtlIHRoZSBDRFMgb2JqZWN0XG5jZHMgPC0gbmV3X2NlbGxfZGF0YV9zZXQoZXhwcmVzc2lvbl9tYXRyaXgsXG4gICAgICAgICAgICAgICAgICAgICAgICAgY2VsbF9tZXRhZGF0YSA9IGNlbGxfbWV0YWRhdGEsXG4gICAgICAgICAgICAgICAgICAgICAgICAgZ2VuZV9tZXRhZGF0YSA9IGdlbmVfYW5ub3RhdGlvbilcbmBgYCJ9 -->
+<pre class="r"><code># Load the data
+expression_matrix &lt;- readRDS(url(&quot;https://depts.washington.edu:/trapnell-lab/software/monocle3/celegans/data/cao_l2_expression.rds&quot;))
+cell_metadata &lt;- readRDS(url(&quot;https://depts.washington.edu:/trapnell-lab/software/monocle3/celegans/data/cao_l2_colData.rds&quot;))
+gene_annotation &lt;- readRDS(url(&quot;https://depts.washington.edu:/trapnell-lab/software/monocle3/celegans/data/cao_l2_rowData.rds&quot;))
 
-Call:
-   msa(mySequences)
 
-MsaAAMultipleAlignment with 9 rows and 456 columns
-    aln                                                                       names
-[1] MAAVVLENGVLSRKLSDFGQETSYIEDNSNQNGAI...QRVEVLDNTQQLKILADSINSEVGILCNALQKIKS PH4H_Rattus_norve...
-[2] MAAVVLENGVLSRKLSDFGQETSYIEDNSNQNGAV...QRVEVLDNTQQLKILADSINSEVGILCHALQKIKS PH4H_Mus_musculus
-[3] MSTAVLENPGLGRKLSDFGQETSYIEDNCNQNGAI...QRIEVLDNTQQLKILADSINSEIGILCSALQKIK- PH4H_Homo_sapiens
-[4] MSALVLESRALGRKLSDFGQETSYIEGNSDQN-AV...QRIEVLDNTQQLKILADSISSEVEILCSALQKLK- PH4H_Bos_taurus
-[5] -----------------------------------...AGDVAPDDLVLNAGDRQGWADTEDV---------- PH4H_Chromobacter...
-[6] -----------------------------------...AGDVVDGDAVLNAGTREGWADTADI---------- PH4H_Ralstonia_so...
-[7] -----------------------------------...VAEIVPGDAVLTRGT-QAYATAGGRLAGAAAG--- PH4H_Caulobacter_...
-[8] -----------------------------------...APLFPPKQAA------------------------- PH4H_Pseudomonas_...
-[9] -----------------------------------...PATV------------------------------- PH4H_Rhizobium_loti
-Con -----------------------------------...????V?D?????????????????IL??A???--- Consensus </code></pre>
-<!-- rnb-output-end -->
+# Make the CDS object
+cds &lt;- new_cell_data_set(expression_matrix,
+                         cell_metadata = cell_metadata,
+                         gene_metadata = gene_annotation)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>显然，默认的打印功能为了紧凑的输出而缩短了 alignment。msa 包提供的
-<code>print()</code> 函数
-提供了一些自定义输出的方法，例如，显示整个对齐拆分为多个子序列块：</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnQobXlGaXJzdEFsaWdubWVudCwgc2hvdz1cImNvbXBsZXRlXCIpXG5gYGAifQ== -->
-<pre class="r"><code>print(myFirstAlignment, show=&quot;complete&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5Nc2FBQU11bHRpcGxlQWxpZ25tZW50IHdpdGggOSByb3dzIGFuZCA0NTYgY29sdW1uc1xuICAgIGFsbiAoMS4uNzMpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZXNcblsxXSBNQUFWVkxFTkdWTFNSS0xTREZHUUVUU1lJRUROU05RTkdBSVNMSUZTTEtFRVZHQUxBS1ZMUkxGRUVORElOTFRISUVTUlBTUkxOIFBINEhfUmF0dHVzX25vcnZlLi4uXG5bMl0gTUFBVlZMRU5HVkxTUktMU0RGR1FFVFNZSUVETlNOUU5HQVZTTElGU0xLRUVWR0FMQUtWTFJMRkVFTkVJTkxUSElFU1JQU1JMTiBQSDRIX011c19tdXNjdWx1c1xuWzNdIE1TVEFWTEVOUEdMR1JLTFNERkdRRVRTWUlFRE5DTlFOR0FJU0xJRlNMS0VFVkdBTEFLVkxSTEZFRU5EVk5MVEhJRVNSUFNSTEsgUEg0SF9Ib21vX3NhcGllbnNcbls0XSBNU0FMVkxFU1JBTEdSS0xTREZHUUVUU1lJRUdOU0RRTi1BVlNMSUZTTEtFRVZHQUxBUlZMUkxGRUVORElOTFRISUVTUlBTUkxSIFBINEhfQm9zX3RhdXJ1c1xuWzVdIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gUEg0SF9DaHJvbW9iYWN0ZXIuLi5cbls2XSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFBINEhfUmFsc3RvbmlhX3NvLi4uXG5bN10gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLSBQSDRIX0NhdWxvYmFjdGVyXy4uLlxuWzhdIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gUEg0SF9Qc2V1ZG9tb25hc18uLi5cbls5XSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIFBINEhfUmhpem9iaXVtX2xvdGlcbkNvbiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIENvbnNlbnN1cyBcblxuICAgIGFsbiAoNzQuLjE0NikgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZXNcblsxXSBLREVZRUZGVFlMREtSVEtQVkxHU0lJS1NMUk5ESUdBVFZIRUxTUkRLRUtOVFZQV0ZQUlRJUUVMRFJGQU5RSUxTWUdBRUxEQURIIFBINEhfUmF0dHVzX25vcnZlLi4uXG5bMl0gS0RFWUVGRlRZTERLUlNLUFZMR1NJSUtTTFJORElHQVRWSEVMU1JES0VLTlRWUFdGUFJUSVFFTERSRkFOUUlMU1lHQUVMREFESCBQSDRIX011c19tdXNjdWx1c1xuWzNdIEtERVlFRkZUSExES1JTTFBBTFROSUlLSUxSSERJR0FUVkhFTFNSREtLS0RUVlBXRlBSVElRRUxEUkZBTlFJTFNZR0FFTERBREggUEg0SF9Ib21vX3NhcGllbnNcbls0XSBLREVZRUZGVE5MRFFSU1ZQQUxBTklJS0lMUkhESUdBVFZIRUxTUkRLS0tEVFZQV0ZQUlRJUUVMRE5GQU5RVkxTWUdBRUxEQURIIFBINEhfQm9zX3RhdXJ1c1xuWzVdIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tTU5EUkFERlZWUEQtLS0gUEg0SF9DaHJvbW9iYWN0ZXIuLi5cbls2XSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1NQUlBVFBUU0FBUFRQQVBBR0ZUIFBINEhfUmFsc3RvbmlhX3NvLi4uXG5bN10gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1NU0ctLS0tLS0tLS0tLSBQSDRIX0NhdWxvYmFjdGVyXy4uLlxuWzhdIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0gUEg0SF9Qc2V1ZG9tb25hc18uLi5cbls5XSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLU1TVkFFWUFSLS0tLS0tIFBINEhfUmhpem9iaXVtX2xvdGlcbkNvbiAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0/Pz8/Pz8/Pz8/WT8/Pz9EPz8/IENvbnNlbnN1cyBcblxuICAgIGFsbiAoMTQ3Li4yMTkpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZXNcblsxXSBQR0ZLRFBWWVJBUlJLUUZBRElBWU5ZUkhHUVBJUFJWRVlURUVFS1FUV0dUVkZSVExLQUxZS1RIQUNZRUhOSElGUExMRUtZQ0dGIFBINEhfUmF0dHVzX25vcnZlLi4uXG5bMl0gUEdGS0RQVllSQVJSS1FGQURJQVlOWVJIR1FQSVBSVkVZVEVFRVJLVFdHVFZGUlRMS0FMWUtUSEFDWUVITkhJRlBMTEVLWUNHRiBQSDRIX011c19tdXNjdWx1c1xuWzNdIFBHRktEUFZZUkFSUktRRkFESUFZTllSSEdRUElQUlZFWU1FRUVLS1RXR1RWRktUTEtTTFlLVEhBQ1lFWU5ISUZQTExFS1lDR0YgUEg0SF9Ib21vX3NhcGllbnNcbls0XSBQR0ZLRFBWWVJBUlJLUUZBRElBWU5ZUkhHUVBJUFJWRVlURUVFS0tUV0dUVkZSVExLU0xZS1RIQUNZRUhOSElGUExMRUtZQ0dGIFBINEhfQm9zX3RhdXJ1c1xuWzVdIC0tSVRUUktOVkdMU0hEQU4tLS0tLS1ERlRMUFFQTERSWVNBRURIQVRXQVRMWVFSUUNLTExQR1JBQ0RFRk1FR0wtLS0tRVJMRVYgUEg0SF9DaHJvbW9iYWN0ZXIuLi5cbls2XSBHVExUREtMUkVRRkFFR0xER1FUTFJQREZUTUVRUFZIUllUQUFESEFUV1JUTFlEUlFFQUxMUEdSQUNERUZMUUdMLS0tLVNUTEdNIFBINEhfUmFsc3RvbmlhX3NvLi4uXG5bN10gLS0tLURHTFNOR1BQUEdBUi0tLS0tUERXVElEUUdXRVRZVFFBRUhEVldJVExZRVJRVERNTEhHUkFDREVGTVJHTC0tLS1EQUxETCBQSDRIX0NhdWxvYmFjdGVyXy4uLlxuWzhdIC0tLS1NS1RUUVlWQVJRUEQtLS0tLS0tLS0tRE5HRklIWVBFVEVIUVZXTlRMSVRSUUxLVklFR1JBQ1FFWUxER0ktLS0tRVFMR0wgUEg0SF9Qc2V1ZG9tb25hc18uLi5cbls5XSAtLS0tRENBQVFHTFJHRFlTLS1WQ1JBREZUVkFRRFlELVlTREVFUUFWV1JUTENEUlFUS0xUUktMQUhIU1lMREdWLS0tLUVLTEdMIFBINEhfUmhpem9iaXVtX2xvdGlcbkNvbiA/Pz8/RD8/Pz8/P1I/UT8/Pz8/Pz8/Pz8/P1A/UD8/P1lURUVFPz9UVz9UTD8/UlE/P0w/Pz8/QUM/RT8/P0c/LS0tLT8/TEc/IENvbnNlbnN1cyBcblxuICAgIGFsbiAoMjIwLi4yOTIpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZXNcblsxXSBSRUROSVBRTEVEVlNRRkxRVENUR0ZSTFJQVkFHTExTU1JERkxHR0xBRlJWRkhDVFFZSVJIR1NLUE1ZVFBFUERJQ0hFTExHSFZQIFBINEhfUmF0dHVzX25vcnZlLi4uXG5bMl0gUkVETklQUUxFRFZTUUZMUVRDVEdGUkxSUFZBR0xMU1NSREZMR0dMQUZSVkZIQ1RRWUlSSEdTS1BNWVRQRVBESUNIRUxMR0hWUCBQSDRIX011c19tdXNjdWx1c1xuWzNdIEhFRE5JUFFMRURWU1FGTFFUQ1RHRlJMUlBWQUdMTFNTUkRGTEdHTEFGUlZGSENUUVlJUkhHU0tQTVlUUEVQRElDSEVMTEdIVlAgUEg0SF9Ib21vX3NhcGllbnNcbls0XSBSRUROSVBRTEVFVlNRRkxRU0NUR0ZSTFJQVkFHTExTU1JERkxHR0xBRlJWRkhDVFFZSVJIR1NLUE1ZVFBFUERJQ0hFTExHSFZQIFBINEhfQm9zX3RhdXJ1c1xuWzVdIERBRFJWUERGTktMTlFLTE1BQVRHV0tJVkFWUEdMSVBERFZGRkVITEFOUlJGUFZUV1dMUkVQSFFMRFlMUUVQRFZGSERMRkdIVlAgUEg0SF9DaHJvbW9iYWN0ZXIuLi5cbls2XSBTUkVHVlBTRkRSTE5FVExNUkFUR1dRSVZBVlBHTFZQREVWRkZFSExBTlJSRlBBU1dXTVJSUERRTERZTFFFUERHRkhESUZHSFZQIFBINEhfUmFsc3RvbmlhX3NvLi4uXG5bN10gSFJTR0lQREZBUklORUVMS1JMVEdXVFZWQVZQR0xWUEREVkZGREhMQU5SUkZQQUdRRklSS1BIRUxEWUxRRVBESUZIRFZGR0hWUCBQSDRIX0NhdWxvYmFjdGVyXy4uLlxuWzhdIFBIRVJJUFFMREVJTlJWTFFBVFRHV1JWQVJWUEFMSVBGUVRGRkVMTEFTUVFGUFZBVEZJUlRQRUVMRFlMUUVQRElGSEVJRkdIQ1AgUEg0SF9Qc2V1ZG9tb25hc18uLi5cbls5XSAtTERSSVBERkVEVlNUS0xSS0xUR1dFSUlBVlBHTElQQUFQRkZESExBTlJSRlBWVE5XTFJUUlFFTERZSVZFUERNRkhERkZHSFZQIFBINEhfUmhpem9iaXVtX2xvdGlcbkNvbiA/P0Q/SVBRTEU/VlNRP0xRPz9UR1dSPz8/VlBHTD9QPz8/RkY/P0xBP1I/RlA/VFE/SVI/Pz8/TERZPz9FUERJRkhFTEZHSFZQIENvbnNlbnN1cyBcblxuICAgIGFsbiAoMjkzLi4zNjUpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZXNcblsxXSBMRlNEUlNGQVFGU1FFSUctTEFTTEdBUERFWUlFS0xBVElZV0ZUVkVGR0xDS0VHLURTSUtBWUdBR0xMU1NGR0VMUVlDTFNELUtQIFBINEhfUmF0dHVzX25vcnZlLi4uXG5bMl0gTEZTRFJTRkFRRlNRRUlHLUxBU0xHQVBERVlJRUtMQVRJWVdGVFZFRkdMQ0tFRy1EU0lLQVlHQUdMTFNTRkdFTFFZQ0xTRC1LUCBQSDRIX011c19tdXNjdWx1c1xuWzNdIExGU0RSU0ZBUUZTUUVJRy1MQVNMR0FQREVZSUVLTEFUSVlXRlRWRUZHTENLUUctRFNJS0FZR0FHTExTU0ZHRUxRWUNMU0UtS1AgUEg0SF9Ib21vX3NhcGllbnNcbls0XSBMRlNEUlNGQVFGU1FFSUctTEFTTEdBUERFWUlFS0xBVElZV0ZUVkVGR0xDS1FHLURTSUtBWUdBR0xMU1NGR0VMUVlDTFNELUtQIFBINEhfQm9zX3RhdXJ1c1xuWzVdIExMSU5QVkZBRFlMRUFZR0tHR1ZLQUtBTEdBTFBNTEFSTFlXWVRWRUZHTElOVFAtQUdNUklZR0FHSUxTU0tTRVNJWUNMRFNBU1AgUEg0SF9DaHJvbW9iYWN0ZXIuLi5cbls2XSBMTElOUFZGQURZTVFBWUdRR0dMS0FBUkxHQUxETUxBUkxZV1lUVkVGR0xJUlRQLUFHTFJJWUdBR0lWU1NLU0VTVllBTERTQVNQIFBINEhfUmFsc3RvbmlhX3NvLi4uXG5bN10gTUxURFBWRkFEWU1RQVlHRUdHUlJBTEdMR1JMQU5MQVJMWVdZVFZFRkdMTU5UUC1BR0xSSVlHQUdJVlNTUlRFU0lGQUxERFBTUCBQSDRIX0NhdWxvYmFjdGVyXy4uLlxuWzhdIExMVE5QV0ZBRUZUSFRZR0tMR0xLQVNLRS1FUlZGTEFSTFlXTVRJRUZHTFZFVEQtUUdLUklZR0dHSUxTU1BLRVRWWVNMU0QtRVAgUEg0SF9Qc2V1ZG9tb25hc18uLi5cbls5XSBWTFNRUFZGQURGTVFNWUdLS0FHRElJQUxHR0RFTUlUUkxZV1lUQUVZR0xWUUVBR1FQTEtBRkdBR0xNU1NGVEVMUUZBVkVHS0RBIFBINEhfUmhpem9iaXVtX2xvdGlcbkNvbiBMTFNEUD9GQT9GP1E/WUc/TEE/Pz9BPz8/Pz9FP0xBUkxZVz9UVkVGR0w/Pz8/LT8/P0tBWUdBR0xMU1NGP0VMUVlDTFNELT9QIENvbnNlbnN1cyBcblxuICAgIGFsbiAoMzY2Li40MzgpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbmFtZXNcblsxXSBLTExQTEVMRUtUQUNRRVlTVlRFRlFQTFlZVkFFU0ZTREFLRUtWUlRGQUFUSVBSUEZTVlJZRFBZVFFSVkVWTEROVFFRTEtJTEFEIFBINEhfUmF0dHVzX25vcnZlLi4uXG5bMl0gS0xMUExFTEVLVEFDUUVZVFZURUZRUExZWVZBRVNGTkRBS0VLVlJURkFBVElQUlBGU1ZSWURQWVRRUlZFVkxETlRRUUxLSUxBRCBQSDRIX011c19tdXNjdWx1c1xuWzNdIEtMTFBMRUxFS1RBSVFOWVRWVEVGUVBMWVlWQUVTRk5EQUtFS1ZSTkZBQVRJUFJQRlNWUllEUFlUUVJJRVZMRE5UUVFMS0lMQUQgUEg0SF9Ib21vX3NhcGllbnNcbls0XSBLTExQTEVMRUtUQVZRRVlUSVRFRlFQTFlZVkFFU0ZOREFLRUtWUk5GQUFUSVBSUEZTVkhZRFBZVFFSSUVWTEROVFFRTEtJTEFEIFBINEhfQm9zX3RhdXJ1c1xuWzVdIE5SVkdGRExNUklNTlRSWVJJRFRGUUtUWUZWSURTRktRTEZEQVRBLVBERkFQTFlMUUxBREFRUFdHQUdEVkFQRERMVkxOQUdEUlEgUEg0SF9DaHJvbW9iYWN0ZXIuLi5cbls2XSBOUklHRkRWSFJJTVJUUllSSURURlFLVFlGVklEU0ZFUUxGREFUUi1QREZUUExZRUFMR1RMUFRGR0FHRFZWREdEQVZMTkFHVFJFIFBINEhfUmFsc3RvbmlhX3NvLi4uXG5bN10gTlJJR0ZETEVSVk1SVExZUklEREZRUVZZRlZJRFNJUVRMUUVWVEwtUkRGR0FJWUVSTEFTVlNESUdWQUVJVlBHREFWTFRSR1QtUSBQSDRIX0NhdWxvYmFjdGVyXy4uLlxuWzhdIExIUUFGTlBMRUFNUlRQWVJJRElMUVBMWUZWTFBETEtSTEZRTEFRLUVESU1BTFZIRUFNUkxHLUxIQVBMRlBQS1FBQS0tLS0tLS0gUEg0SF9Qc2V1ZG9tb25hc18uLi5cbls5XSBISFZQRkRMRVRWTVJUR1lFSURLRlFSQVlGVkxQU0ZEQUxSREFGUVRBREZFQUlWQVJSS0RRS0FMRFBBVFYtLS0tLS0tLS0tLS0tIFBINEhfUmhpem9iaXVtX2xvdGlcbkNvbiA/Pz9QRj9MRT8/TT9UP1k/SUQ/RlFQTFlGVj8/U0Y/P0w/RT8/Uj8/RD9UPz8/Pz8/Pz8/P1A/Pz8/Pz9WP0Q/Pz8/Pz8/Pz8/IENvbnNlbnN1cyBcblxuICAgIGFsbiAoNDM5Li40NTYpICAgICBuYW1lc1xuWzFdIFNJTlNFVkdJTENOQUxRS0lLUyBQSDRIX1JhdHR1c19ub3J2ZS4uLlxuWzJdIFNJTlNFVkdJTENIQUxRS0lLUyBQSDRIX011c19tdXNjdWx1c1xuWzNdIFNJTlNFSUdJTENTQUxRS0lLLSBQSDRIX0hvbW9fc2FwaWVuc1xuWzRdIFNJU1NFVkVJTENTQUxRS0xLLSBQSDRIX0Jvc190YXVydXNcbls1XSBHV0FEVEVEVi0tLS0tLS0tLS0gUEg0SF9DaHJvbW9iYWN0ZXIuLi5cbls2XSBHV0FEVEFESS0tLS0tLS0tLS0gUEg0SF9SYWxzdG9uaWFfc28uLi5cbls3XSBBWUFUQUdHUkxBR0FBQUctLS0gUEg0SF9DYXVsb2JhY3Rlcl8uLi5cbls4XSAtLS0tLS0tLS0tLS0tLS0tLS0gUEg0SF9Qc2V1ZG9tb25hc18uLi5cbls5XSAtLS0tLS0tLS0tLS0tLS0tLS0gUEg0SF9SaGl6b2JpdW1fbG90aVxuQ29uID8/Pz8/Pz9JTD8/QT8/Py0tLSBDb25zZW5zdXMgXG4ifQ== -->
-<pre><code>
-MsaAAMultipleAlignment with 9 rows and 456 columns
-    aln (1..73)                                                               names
-[1] MAAVVLENGVLSRKLSDFGQETSYIEDNSNQNGAISLIFSLKEEVGALAKVLRLFEENDINLTHIESRPSRLN PH4H_Rattus_norve...
-[2] MAAVVLENGVLSRKLSDFGQETSYIEDNSNQNGAVSLIFSLKEEVGALAKVLRLFEENEINLTHIESRPSRLN PH4H_Mus_musculus
-[3] MSTAVLENPGLGRKLSDFGQETSYIEDNCNQNGAISLIFSLKEEVGALAKVLRLFEENDVNLTHIESRPSRLK PH4H_Homo_sapiens
-[4] MSALVLESRALGRKLSDFGQETSYIEGNSDQN-AVSLIFSLKEEVGALARVLRLFEENDINLTHIESRPSRLR PH4H_Bos_taurus
-[5] ------------------------------------------------------------------------- PH4H_Chromobacter...
-[6] ------------------------------------------------------------------------- PH4H_Ralstonia_so...
-[7] ------------------------------------------------------------------------- PH4H_Caulobacter_...
-[8] ------------------------------------------------------------------------- PH4H_Pseudomonas_...
-[9] ------------------------------------------------------------------------- PH4H_Rhizobium_loti
-Con ------------------------------------------------------------------------- Consensus 
-
-    aln (74..146)                                                             names
-[1] KDEYEFFTYLDKRTKPVLGSIIKSLRNDIGATVHELSRDKEKNTVPWFPRTIQELDRFANQILSYGAELDADH PH4H_Rattus_norve...
-[2] KDEYEFFTYLDKRSKPVLGSIIKSLRNDIGATVHELSRDKEKNTVPWFPRTIQELDRFANQILSYGAELDADH PH4H_Mus_musculus
-[3] KDEYEFFTHLDKRSLPALTNIIKILRHDIGATVHELSRDKKKDTVPWFPRTIQELDRFANQILSYGAELDADH PH4H_Homo_sapiens
-[4] KDEYEFFTNLDQRSVPALANIIKILRHDIGATVHELSRDKKKDTVPWFPRTIQELDNFANQVLSYGAELDADH PH4H_Bos_taurus
-[5] -----------------------------------------------------------MNDRADFVVPD--- PH4H_Chromobacter...
-[6] ------------------------------------------------------MAIATPTSAAPTPAPAGFT PH4H_Ralstonia_so...
-[7] -----------------------------------------------------------MSG----------- PH4H_Caulobacter_...
-[8] ------------------------------------------------------------------------- PH4H_Pseudomonas_...
-[9] -----------------------------------------------------------MSVAEYAR------ PH4H_Rhizobium_loti
-Con ------------------------------------------------------??????????Y????D??? Consensus 
-
-    aln (147..219)                                                            names
-[1] PGFKDPVYRARRKQFADIAYNYRHGQPIPRVEYTEEEKQTWGTVFRTLKALYKTHACYEHNHIFPLLEKYCGF PH4H_Rattus_norve...
-[2] PGFKDPVYRARRKQFADIAYNYRHGQPIPRVEYTEEERKTWGTVFRTLKALYKTHACYEHNHIFPLLEKYCGF PH4H_Mus_musculus
-[3] PGFKDPVYRARRKQFADIAYNYRHGQPIPRVEYMEEEKKTWGTVFKTLKSLYKTHACYEYNHIFPLLEKYCGF PH4H_Homo_sapiens
-[4] PGFKDPVYRARRKQFADIAYNYRHGQPIPRVEYTEEEKKTWGTVFRTLKSLYKTHACYEHNHIFPLLEKYCGF PH4H_Bos_taurus
-[5] --ITTRKNVGLSHDAN------DFTLPQPLDRYSAEDHATWATLYQRQCKLLPGRACDEFMEGL----ERLEV PH4H_Chromobacter...
-[6] GTLTDKLREQFAEGLDGQTLRPDFTMEQPVHRYTAADHATWRTLYDRQEALLPGRACDEFLQGL----STLGM PH4H_Ralstonia_so...
-[7] ----DGLSNGPPPGAR-----PDWTIDQGWETYTQAEHDVWITLYERQTDMLHGRACDEFMRGL----DALDL PH4H_Caulobacter_...
-[8] ----MKTTQYVARQPD----------DNGFIHYPETEHQVWNTLITRQLKVIEGRACQEYLDGI----EQLGL PH4H_Pseudomonas_...
-[9] ----DCAAQGLRGDYS--VCRADFTVAQDYD-YSDEEQAVWRTLCDRQTKLTRKLAHHSYLDGV----EKLGL PH4H_Rhizobium_loti
-Con ????D??????R?Q????????????P?P???YTEEE??TW?TL??RQ??L????AC?E???G?----??LG? Consensus 
-
-    aln (220..292)                                                            names
-[1] REDNIPQLEDVSQFLQTCTGFRLRPVAGLLSSRDFLGGLAFRVFHCTQYIRHGSKPMYTPEPDICHELLGHVP PH4H_Rattus_norve...
-[2] REDNIPQLEDVSQFLQTCTGFRLRPVAGLLSSRDFLGGLAFRVFHCTQYIRHGSKPMYTPEPDICHELLGHVP PH4H_Mus_musculus
-[3] HEDNIPQLEDVSQFLQTCTGFRLRPVAGLLSSRDFLGGLAFRVFHCTQYIRHGSKPMYTPEPDICHELLGHVP PH4H_Homo_sapiens
-[4] REDNIPQLEEVSQFLQSCTGFRLRPVAGLLSSRDFLGGLAFRVFHCTQYIRHGSKPMYTPEPDICHELLGHVP PH4H_Bos_taurus
-[5] DADRVPDFNKLNQKLMAATGWKIVAVPGLIPDDVFFEHLANRRFPVTWWLREPHQLDYLQEPDVFHDLFGHVP PH4H_Chromobacter...
-[6] SREGVPSFDRLNETLMRATGWQIVAVPGLVPDEVFFEHLANRRFPASWWMRRPDQLDYLQEPDGFHDIFGHVP PH4H_Ralstonia_so...
-[7] HRSGIPDFARINEELKRLTGWTVVAVPGLVPDDVFFDHLANRRFPAGQFIRKPHELDYLQEPDIFHDVFGHVP PH4H_Caulobacter_...
-[8] PHERIPQLDEINRVLQATTGWRVARVPALIPFQTFFELLASQQFPVATFIRTPEELDYLQEPDIFHEIFGHCP PH4H_Pseudomonas_...
-[9] -LDRIPDFEDVSTKLRKLTGWEIIAVPGLIPAAPFFDHLANRRFPVTNWLRTRQELDYIVEPDMFHDFFGHVP PH4H_Rhizobium_loti
-Con ??D?IPQLE?VSQ?LQ??TGWR???VPGL?P???FF??LA?R?FP?TQ?IR????LDY??EPDIFHELFGHVP Consensus 
-
-    aln (293..365)                                                            names
-[1] LFSDRSFAQFSQEIG-LASLGAPDEYIEKLATIYWFTVEFGLCKEG-DSIKAYGAGLLSSFGELQYCLSD-KP PH4H_Rattus_norve...
-[2] LFSDRSFAQFSQEIG-LASLGAPDEYIEKLATIYWFTVEFGLCKEG-DSIKAYGAGLLSSFGELQYCLSD-KP PH4H_Mus_musculus
-[3] LFSDRSFAQFSQEIG-LASLGAPDEYIEKLATIYWFTVEFGLCKQG-DSIKAYGAGLLSSFGELQYCLSE-KP PH4H_Homo_sapiens
-[4] LFSDRSFAQFSQEIG-LASLGAPDEYIEKLATIYWFTVEFGLCKQG-DSIKAYGAGLLSSFGELQYCLSD-KP PH4H_Bos_taurus
-[5] LLINPVFADYLEAYGKGGVKAKALGALPMLARLYWYTVEFGLINTP-AGMRIYGAGILSSKSESIYCLDSASP PH4H_Chromobacter...
-[6] LLINPVFADYMQAYGQGGLKAARLGALDMLARLYWYTVEFGLIRTP-AGLRIYGAGIVSSKSESVYALDSASP PH4H_Ralstonia_so...
-[7] MLTDPVFADYMQAYGEGGRRALGLGRLANLARLYWYTVEFGLMNTP-AGLRIYGAGIVSSRTESIFALDDPSP PH4H_Caulobacter_...
-[8] LLTNPWFAEFTHTYGKLGLKASKE-ERVFLARLYWMTIEFGLVETD-QGKRIYGGGILSSPKETVYSLSD-EP PH4H_Pseudomonas_...
-[9] VLSQPVFADFMQMYGKKAGDIIALGGDEMITRLYWYTAEYGLVQEAGQPLKAFGAGLMSSFTELQFAVEGKDA PH4H_Rhizobium_loti
-Con LLSDP?FA?F?Q?YG?LA???A?????E?LARLYW?TVEFGL????-???KAYGAGLLSSF?ELQYCLSD-?P Consensus 
-
-    aln (366..438)                                                            names
-[1] KLLPLELEKTACQEYSVTEFQPLYYVAESFSDAKEKVRTFAATIPRPFSVRYDPYTQRVEVLDNTQQLKILAD PH4H_Rattus_norve...
-[2] KLLPLELEKTACQEYTVTEFQPLYYVAESFNDAKEKVRTFAATIPRPFSVRYDPYTQRVEVLDNTQQLKILAD PH4H_Mus_musculus
-[3] KLLPLELEKTAIQNYTVTEFQPLYYVAESFNDAKEKVRNFAATIPRPFSVRYDPYTQRIEVLDNTQQLKILAD PH4H_Homo_sapiens
-[4] KLLPLELEKTAVQEYTITEFQPLYYVAESFNDAKEKVRNFAATIPRPFSVHYDPYTQRIEVLDNTQQLKILAD PH4H_Bos_taurus
-[5] NRVGFDLMRIMNTRYRIDTFQKTYFVIDSFKQLFDATA-PDFAPLYLQLADAQPWGAGDVAPDDLVLNAGDRQ PH4H_Chromobacter...
-[6] NRIGFDVHRIMRTRYRIDTFQKTYFVIDSFEQLFDATR-PDFTPLYEALGTLPTFGAGDVVDGDAVLNAGTRE PH4H_Ralstonia_so...
-[7] NRIGFDLERVMRTLYRIDDFQQVYFVIDSIQTLQEVTL-RDFGAIYERLASVSDIGVAEIVPGDAVLTRGT-Q PH4H_Caulobacter_...
-[8] LHQAFNPLEAMRTPYRIDILQPLYFVLPDLKRLFQLAQ-EDIMALVHEAMRLG-LHAPLFPPKQAA------- PH4H_Pseudomonas_...
-[9] HHVPFDLETVMRTGYEIDKFQRAYFVLPSFDALRDAFQTADFEAIVARRKDQKALDPATV------------- PH4H_Rhizobium_loti
-Con ???PF?LE??M?T?Y?ID?FQPLYFV??SF??L?E??R??D?T??????????P??????V?D?????????? Consensus 
-
-    aln (439..456)     names
-[1] SINSEVGILCNALQKIKS PH4H_Rattus_norve...
-[2] SINSEVGILCHALQKIKS PH4H_Mus_musculus
-[3] SINSEIGILCSALQKIK- PH4H_Homo_sapiens
-[4] SISSEVEILCSALQKLK- PH4H_Bos_taurus
-[5] GWADTEDV---------- PH4H_Chromobacter...
-[6] GWADTADI---------- PH4H_Ralstonia_so...
-[7] AYATAGGRLAGAAAG--- PH4H_Caulobacter_...
-[8] ------------------ PH4H_Pseudomonas_...
-[9] ------------------ PH4H_Rhizobium_loti
-Con ???????IL??A???--- Consensus </code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>msa 包还提供了函数 <code>msaPrettyPrint()</code>，它允许使用 LATEX 包
-TEXshade 漂亮地打印多 个 alignments。</p>
 <!-- rnb-text-end -->
 </div>
+</div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQphdXRob3I6ICdaaGVuZ0h1Jw0KZGF0ZTogJzIwMjItMDctMjAnDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOiANCiAgICB0b2M6IHllcw0KICAgIGNzczogQzovVXNlcnMvMTMwODEvT25lRHJpdmUgLSB3ZWJtYWlsLmh6YXUuZWR1LmNuL0dpdGh1Yi9sZWFybi9SL25vdGVib29rLmNzcw0KICAgIG51bWJlcl9zZWN0aW9uczogeWVzDQotLS0NCg0KIyBJbnRyb2R1Y3Rpb24NCm1zYTogQW4gUiBQYWNrYWdlIGZvciBNdWx0aXBsZSBTZXF1ZW5jZSBBbGlnbm1lbnQNCg0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQoNCiMgSW5zdGFsbGF0aW9uDQpgYGB7cn0NCmlmICghcmVxdWlyZU5hbWVzcGFjZSgiQmlvY01hbmFnZXIiLCBxdWlldGx5PVRSVUUpKQ0KICBpbnN0YWxsLnBhY2thZ2VzKCJCaW9jTWFuYWdlciIpDQpCaW9jTWFuYWdlcjo6aW5zdGFsbCgibXNhIikNCmBgYA0KDQpgYGB7cn0NCmxpYnJhcnkobXNhKQ0KYGBgDQoNCuaWh+S7tiBgdGV4c2hhZGUuc3R5YCDpmo8gYG1zYSBwYWNrYWdlYCDkuIDotbfmj5DkvpvjgILopoHnoa7lrprmlofku7bnmoTkvY3nva7vvIzor7flnKggUiDkvJror53kuK3ovpMNCuWFpeS7peS4i+WRveS7pO+8mg0KYGBge3J9DQpzeXN0ZW0uZmlsZSgidGV4IiwgInRleHNoYWRlLnN0eSIsIHBhY2thZ2U9Im1zYSIpDQpgYGANCg0KDQotLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KDQoNCiMgbXNhIGZvciB0aGUgSW1wYXRpZW50DQrkuLrkuobor7TmmI7ln7rmnKzlt6XkvZzmtYHnqIvvvIzmnKzoioLmj5DkvpvkuobkuIDkuKrluKbmnInpu5jorqTorr7nva7nmoTnroDljZXnpLrkvovvvIzlubbkuJTkuI3or6bnu4bku4vnu43mr4/kuKrmraUNCumqpOOAguiuqeaIkeS7rOmmluWFiOS7jiBtc2Eg5YyF5o+Q5L6b55qE56S65L6L5paH5Lu25Lit5Yqg6L295rCo5Z+66YW45bqP5YiX77yaDQpgYGB7cn0NCm15U2VxdWVuY2VGaWxlIDwtIHN5c3RlbS5maWxlKCJleGFtcGxlcyIsICJleGFtcGxlQUEuZmFzdGEiLCBwYWNrYWdlPSJtc2EiKQ0KbXlTZXF1ZW5jZXMgPC0gcmVhZEFBU3RyaW5nU2V0KG15U2VxdWVuY2VGaWxlKQ0KbXlTZXF1ZW5jZXMNCmBgYA0KDQrnjrDlnKjmiJHku6zlt7Lnu4/liqDovb3kuobluo/liJfvvIzmiJHku6zlj6/ku6Xov5DooYwgYG1zYSgpYCDlh73mlbDvvIzpu5jorqTmg4XlhrXkuIvvvIzkvb/nlKjpu5jorqTlj4LmlbDov5DooYwgDQpDbHVzdGFsVzogDQpgYGB7cn0NCm15Rmlyc3RBbGlnbm1lbnQgPC0gbXNhKG15U2VxdWVuY2VzKQ0KIyMgdXNlIGRlZmF1bHQgc3Vic3RpdHV0aW9uIG1hdHJpeA0KbXlGaXJzdEFsaWdubWVudA0KYGBgDQoNCuaYvueEtu+8jOm7mOiupOeahOaJk+WNsOWKn+iDveS4uuS6hue0p+WHkeeahOi+k+WHuuiAjOe8qeefreS6hiBhbGlnbm1lbnTjgIJtc2Eg5YyF5o+Q5L6b55qEIGBwcmludCgpYCDlh73mlbAg5o+Q5L6b5LqG5LiA5Lqb6Ieq5a6a5LmJ6L6T5Ye655qE5pa55rOV77yM5L6L5aaC77yM5pi+56S65pW05Liq5a+56b2Q5ouG5YiG5Li65aSa5Liq5a2Q5bqP5YiX5Z2X77yaDQpgYGB7cn0NCnByaW50KG15Rmlyc3RBbGlnbm1lbnQsIHNob3c9ImNvbXBsZXRlIikNCmBgYA0KDQptc2Eg5YyF6L+Y5o+Q5L6b5LqG5Ye95pWwIGBtc2FQcmV0dHlQcmludCgpYO+8jOWug+WFgeiuuOS9v+eUqCBMQVRFWCDljIUgVEVYc2hhZGUg5ryC5Lqu5Zyw5omT5Y2w5aSaDQrkuKogYWxpZ25tZW50c+OAgg0KDQoNCg0KDQoNCg0KDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IA0KICBodG1sX25vdGVib29rOiANCiAgICB0b2M6IHllcw0KICAgIGNzczogQzovVXNlcnMvMTMwODEvT25lRHJpdmUgLSB3ZWJtYWlsLmh6YXUuZWR1LmNuL0dpdGh1Yi9sZWFybi9SL25vdGVib29rLmNzcw0KICAgIG51bWJlcl9zZWN0aW9uczogeWVzDQotLS0NCg0KIyBJbnN0YWxsaW5nIE1vbm9jbGUgMw0KIyMgUmVxdWlyZWQgc29mdHdhcmUNClRvIGluc3RhbGwgQmlvY29uZHVjdG9yLCBvcGVuIFIgYW5kIHJ1bjoNCmBgYHtyfQ0KaWYgKCFyZXF1aXJlTmFtZXNwYWNlKCJCaW9jTWFuYWdlciIsIHF1aWV0bHkgPSBUUlVFKSkNCmluc3RhbGwucGFja2FnZXMoIkJpb2NNYW5hZ2VyIikNCkJpb2NNYW5hZ2VyOjppbnN0YWxsKHZlcnNpb24gPSAiMy4xNCIpDQpgYGANCg0KTmV4dCwgaW5zdGFsbCBhIGZldyBCaW9jb25kdWN0b3IgZGVwZW5kZW5jaWVzIHRoYXQgYXJlbid0IGF1dG9tYXRpY2FsbHkgaW5zdGFsbGVkOg0KYGBge3J9DQpCaW9jTWFuYWdlcjo6aW5zdGFsbChjKCdCaW9jR2VuZXJpY3MnLCAnRGVsYXllZEFycmF5JywgJ0RlbGF5ZWRNYXRyaXhTdGF0cycsDQogICAgICAgICAgICAgICAgICAgICAgICdsaW1tYScsICdsbWU0JywgJ1M0VmVjdG9ycycsICdTaW5nbGVDZWxsRXhwZXJpbWVudCcsDQogICAgICAgICAgICAgICAgICAgICAgICdTdW1tYXJpemVkRXhwZXJpbWVudCcsICdiYXRjaGVsb3InLCAnTWF0cml4LnV0aWxzJywNCiAgICAgICAgICAgICAgICAgICAgICAgJ0hERjVBcnJheScsICd0ZXJyYScsICdnZ3Jhc3RyJykpDQpgYGANCg0KTm93LCBpbnN0YWxsIG1vbm9jbGUzIHRocm91Z2ggdGhlIGNvbGUtdHJhcG5lbGwtbGFiIEdpdEh1YiwgZXhlY3V0ZToNCmBgYHtyfQ0KaW5zdGFsbC5wYWNrYWdlcygiZGV2dG9vbHMiKQ0KZGV2dG9vbHM6Omluc3RhbGxfZ2l0aHViKCdjb2xlLXRyYXBuZWxsLWxhYi9tb25vY2xlMycpDQpgYGANCg0KIyMgVGVzdGluZyB0aGUgaW5zdGFsbGF0aW9uDQpUbyBlbnN1cmUgdGhhdCBNb25vY2xlIDMgd2FzIGluc3RhbGxlZCBjb3JyZWN0bHksIHN0YXJ0IGEgbmV3IFIgc2Vzc2lvbiBhbmQgcnVuOg0KYGBge3J9DQpsaWJyYXJ5KG1vbm9jbGUzKQ0KYGBgDQoNCg0KIyBHZXR0aW5nIHN0YXJ0ZWQgd2l0aCBNb25vY2xlIDMNCiMjIExvYWQgTW9ub2NsZSAzDQpgYGB7cn0NCmxpYnJhcnkobW9ub2NsZTMpDQoNCiMgVGhlIHR1dG9yaWFsIHNob3duIGJlbG93IGFuZCBvbiBzdWJzZXF1ZW50IHBhZ2VzIHVzZXMgdHdvIGFkZGl0aW9uYWwgcGFja2FnZXM6DQpsaWJyYXJ5KGdncGxvdDIpDQpsaWJyYXJ5KGRwbHlyKQ0KYGBgDQoNCiMjIExvYWRpbmcgeW91ciBkYXRhDQpNb25vY2xlIDMg5Lul57uG6IOe5Z+65Zug6KGo6L6+55+p6Zi15L2c5Li66L6T5YWl44CCTW9ub2NsZSAzIOiuvuiuoeeUqOS6jue7neWvuei9rOW9leiuoeaVsCAo5L6L5aaC5p2l6IeqIFVNSSDlrp7pqowp44CCTW9ub2NsZSAzIOS9v+eUqCBDZWxsIFJhbmdlciDnlJ/miJDnmoTovazlvZXorqHmlbDnn6npmLUg4oCcb3V0LW9mLXRoZS1ib3jigJ3vvIzor6Xova/ku7bnrqHpgZPnlKjkuo7liIbmnpAgMTBYIEdlbm9taWNzIENocm9taXVtIOS7quWZqOeahOWunumqjOOAgk1vbm9jbGUgMyDov5jlj6/ku6Xlvojlpb3lnLDlpITnkIbmnaXoh6rlhbbku5YgUk5BLVNlcSDlt6XkvZzmtYHnqIvvvIjkvovlpoIgc2NpLVJOQS1TZXHvvInlkowgQmlvcmFkIGRkU0VRIOetieS7quWZqOeahOaVsOaNruOAgg0KDQojIyBUaGUgY2VsbF9kYXRhX3NldCBjbGFzcw0KTW9ub2NsZSDlnKggYGNlbGxfZGF0YV9zZXRgIOexu+eahOWvueixoeS4reS/neWtmOWNlee7huiDnuihqOi+vuaVsOaNruOAguivpeexu+a0vueUn+iHqiBCaW9jb25kdWN0b3IgYFNpbmdsZUNlbGxFeHBlcmltZW50YCDnsbvvvIzor6XnsbvkuLrkvb/nlKggQmlvY29uZHVjdG9yIOWIhuaekOWFtuS7luWNlee7huiDnuWunumqjOeahOS6uuaPkOS+m+eGn+aCieeahOmAmueUqOaOpeWPo+OAguivpeexu+mcgOimgeS4ieS4qui+k+WFpeaWh+S7tu+8miAgDQpgZXhwcmVzc2lvbl9tYXRyaXhgLOihqOi+vumHj+eahOaVsOWAvOefqemYte+8jOWFtuS4reihjOaYr+WfuuWboO+8jOWIl+aYr+e7huiDniAgDQpgY2VsbF9tZXRhZGF0YWAs5LiA5Liq5pWw5o2u5qGG77yM5YW25Lit6KGM5piv57uG6IOe77yM5YiX5piv57uG6IOe55qE5bGe5oCnKOWmgue7huiDnuexu+Wei+OAgeWfueWFu+adoeS7tuOAgeaNleiOt+WkqeaVsOetieOAgikgIA0KYGdlbmVfbWV0YWRhdGFgLOS4gOS4quaVsOaNruahhu+8jOWFtuS4reihjOaYr+eJueW+gSjkvovlpoLln7rlm6Ap77yM5YiX5piv5Z+65Zug5bGe5oCn77yM5aaC55Sf54mp5Z6L44CBZ2PlkKvph4/nrYnjgIINCg0KIyMgR2VuZXJhdGUgYSBjZWxsX2RhdGFfc2V0DQrmgqjlj6/ku6XliJvlu7rkuIDkuKrmlrDnmoQgYGNlbGxfZGF0YV9zZXRgIChDRFMpIOWvueixoe+8jOWmguS4i+aJgOekuu+8mg0KYGBge3J9DQojIExvYWQgdGhlIGRhdGENCmV4cHJlc3Npb25fbWF0cml4IDwtIHJlYWRSRFModXJsKCJodHRwczovL2RlcHRzLndhc2hpbmd0b24uZWR1Oi90cmFwbmVsbC1sYWIvc29mdHdhcmUvbW9ub2NsZTMvY2VsZWdhbnMvZGF0YS9jYW9fbDJfZXhwcmVzc2lvbi5yZHMiKSkNCmNlbGxfbWV0YWRhdGEgPC0gcmVhZFJEUyh1cmwoImh0dHBzOi8vZGVwdHMud2FzaGluZ3Rvbi5lZHU6L3RyYXBuZWxsLWxhYi9zb2Z0d2FyZS9tb25vY2xlMy9jZWxlZ2Fucy9kYXRhL2Nhb19sMl9jb2xEYXRhLnJkcyIpKQ0KZ2VuZV9hbm5vdGF0aW9uIDwtIHJlYWRSRFModXJsKCJodHRwczovL2RlcHRzLndhc2hpbmd0b24uZWR1Oi90cmFwbmVsbC1sYWIvc29mdHdhcmUvbW9ub2NsZTMvY2VsZWdhbnMvZGF0YS9jYW9fbDJfcm93RGF0YS5yZHMiKSkNCg0KDQojIE1ha2UgdGhlIENEUyBvYmplY3QNCmNkcyA8LSBuZXdfY2VsbF9kYXRhX3NldChleHByZXNzaW9uX21hdHJpeCwNCiAgICAgICAgICAgICAgICAgICAgICAgICBjZWxsX21ldGFkYXRhID0gY2VsbF9tZXRhZGF0YSwNCiAgICAgICAgICAgICAgICAgICAgICAgICBnZW5lX21ldGFkYXRhID0gZ2VuZV9hbm5vdGF0aW9uKQ0KYGBgDQoNCg==</div>
 
 
 
@@ -2030,7 +1947,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("msa_tutorial.Rmd");
+  window.initializeSourceEmbed("monocle_tutorial.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
