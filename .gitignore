@@ -1,0 +1,17 @@
+# R
+R/hdWGCNA/TOM
+R/hdWGCNA/Zhou_2020.rds
+R/scrattch/subsample_PCA
+R/WGCNA/FemaleLiver-Data
+R/WGCNA/*.RData
+R/WGCNA/geneInfo.csv
+
+
+# python
+python/anndata/.ipynb_checkpoints
+
+python/seaborn/.ipynb_checkpoints
+python/seaborn/seaborn-data
+
+python/skimage/.ipynb_checkpoints
+

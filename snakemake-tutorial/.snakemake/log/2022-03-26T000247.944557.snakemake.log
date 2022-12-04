@@ -1,4 +1,0 @@
-Building DAG of jobs...
-WildcardError in line 35 of /mnt/f/Github/learn/snakemake-tutorial/Snakefile:
-Wildcards in input files cannot be determined from output files:
-'sample'

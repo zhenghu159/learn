@@ -1,0 +1,66 @@
+> Cell type Seam cells
+expressed: col-65, col-77, col-107, ram-2, Y47D7A.13
+
+> Cell type Socket cells
+expressed: col-73, col-180, mup-4, F11E6.3, grsp-1
+
+> Cell type Body wall muscle
+expressed: csq-1, myo-3, unc-15, unc-54, cpna-2
+
+> Cell type Marginal_cell
+expressed: cup-4, inos-1, Y73F4A.1, ZC116.3, aman-1
+
+> Cell type Unclassified neurons
+expressed: cwp-4, C25D7.15, D1069.1, F31F7.2, D1007.18
+
+> Cell type Distal tip cells
+expressed: egl-15
+
+> Cell type Ciliated neurons
+expressed: egl-20, F36F2.2, ttr-10, T23B12.8, Y59C2A.1
+
+> Cell type Am/PH sheath cells
+expressed: far-8, F35B12.9, fig-1, ZK822.4, T02B11.3
+
+> Cell type Hypodermal cells
+expressed: flp-6, gcy-3, gcy-19, tank-1, C09G1.5
+
+> Cell type Coelomocyte
+expressed: flr-2, nlp-6, degt-1, F46G11.1, flp-28
+
+> Cell type Motor neurons
+expressed: gar-2, pgp-14, madd-4, R03C1.1, pdf-1
+
+> Cell type Unclassified eurons
+expressed: gcy-11, lron-4, Y41C4A.6, flp-27, capa-1
+
+> Cell type Germline
+expressed: gld-1, pgl-1, ppw-2, prg-2, cbd-1
+
+> Cell type Inner labial neuron
+expressed: R07B1.8, C06A8.3, D2024.4, F35A5.5, cutl-16
+
+> Cell type Pharyngeal gland cells
+expressed: ins-5, ins-6, ins-30, sptf-1, T20B6.3
+
+> Cell type Mesodermal cells
+expressed: mca-1, pgp-3, kcc-1, F11A5.9, Y55B1BL.1
+
+> Cell type Sex myoblasts
+expressed: mec-1, mec-7, mec-12, mec-17, mec-18
+
+> Cell type Somatic gonad precursor
+expressed: nid-1, sex-1, K03B8.6, T02E1.8
+
+> Cell type Intestinal/rectal muscle
+expressed: ocr-2, xbx-9, T09B9.3, Y9C2UA.1, C39D10.2
+
+> Cell type Excretory gland
+expressed: nspc-20, nspc-9, nspc-14, nspc-10, nspc-3
+
+> Cell type Interneurons
+expressed: F15A4.6, dod-6, C49G7.3, M04G7.1, phat-4
+
+> Cell type Chemosensory neurons
+expressed: acbp-6, Y66D12A.14, ZC412.4, C32E8.6, C41A3.1
+
