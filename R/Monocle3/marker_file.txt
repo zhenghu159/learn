@@ -10,14 +10,11 @@ expressed: csq-1, myo-3, unc-15, unc-54, cpna-2
 > Cell type Marginal_cell
 expressed: cup-4, inos-1, Y73F4A.1, ZC116.3, aman-1
 
-> Cell type Unclassified neurons
-expressed: cwp-4, C25D7.15, D1069.1, F31F7.2, D1007.18
-
-> Cell type Distal tip cells
-expressed: egl-15
+> Cell type 16
+expressed: dpy-14, F40F11.4, ZC21.10
 
 > Cell type Ciliated neurons
-expressed: egl-20, F36F2.2, ttr-10, T23B12.8, Y59C2A.1
+expressed: egl-20, lbp-2, ttr-10, T23B12.8, Y59C2A.1
 
 > Cell type Am/PH sheath cells
 expressed: far-8, F35B12.9, fig-1, ZK822.4, T02B11.3
@@ -49,14 +46,17 @@ expressed: mca-1, pgp-3, kcc-1, F11A5.9, Y55B1BL.1
 > Cell type Sex myoblasts
 expressed: mec-1, mec-7, mec-12, mec-17, mec-18
 
-> Cell type Somatic gonad precursor
-expressed: nid-1, sex-1, K03B8.6, T02E1.8
+> Cell type Distal tip cells
+expressed: nid-1, sex-1, K03B8.6, T02E1.8, ekl-6
 
 > Cell type Intestinal/rectal muscle
 expressed: ocr-2, xbx-9, T09B9.3, Y9C2UA.1, C39D10.2
 
+> Cell type Unclassified neurons
+expressed: C25D7.15, T06D8.2, D1069.1, F31F7.2, D1007.18
+
 > Cell type Excretory gland
-expressed: nspc-20, nspc-9, nspc-14, nspc-10, nspc-3
+expressed: nspc-20, nspc-17, nspc-9, nspc-14, nspc-10
 
 > Cell type Interneurons
 expressed: F15A4.6, dod-6, C49G7.3, M04G7.1, phat-4
