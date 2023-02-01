@@ -5,6 +5,10 @@
 
 ## Data Integration
 
-#### Introduction to scRNA-seq integration
+### 1.Introduction to scRNA-seq integration
 官网教程：<https://satijalab.org/seurat/articles/integration_introduction.html> \
 中文教程：<http://htmlpreview.github.io/?https://github.com/zhenghu159/learn/blob/main/R/11.Seurat/Introduction%20to%20scRNA-seq%20integration.nb.html>
+
+### 2.Mapping and annotating query datasets
+官网教程：<https://satijalab.org/seurat/articles/integration_mapping.html> \
+中文教程：<http://htmlpreview.github.io/?https://github.com/zhenghu159/learn/blob/main/R/11.Seurat/Mapping%20and%20annotating%20query%20datasets.nb.html>
