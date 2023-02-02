@@ -1,11 +1,12 @@
 ---
 title: "Introduction to scRNA-seq integration"
+author: TigerZ
+date: 2023-1-31
 output: 
   html_notebook: 
     toc: yes
     number_sections: yes
-author: TigerZ
-date: 2023-1-31
+    css: F:/Github/learn/R/notebook.css
 ---
 
 
@@ -121,7 +122,7 @@ head(nk.markers)
 FeaturePlot(immune.combined, features = c("CD3D", "SELL", "CREM", "CD8A", "GNLY", "CD79A", "FCGR3A","CCL2", "PPBP"), min.cutoff = "q9")
 ```
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 immune.combined <- RenameIdents(immune.combined, `0` = "CD14 Mono", `1` = "CD4 Naive T", `2` = "CD4 Memory T", `3` = "CD16 Mono", `4` = "B", `5` = "CD8 T", `6` = "NK", `7` = "T activated", `8` = "DC", `9` = "B Activated", `10` = "Mk", `11` = "pDC", `12` = "Eryth", `13` = "Mono/Mk Doublets", `14` = "HSPC")
 DimPlot(immune.combined, label = TRUE)
 ```
@@ -129,12 +130,8 @@ DimPlot(immune.combined, label = TRUE)
 `DotPlot()` 函数的 `split.by` 参数可用于查看跨条件的保守细胞类型标记，显示表达水平和 cluster 中表达任何给定基因的细胞百分比。在这里，我们为 14 个 clusters 中的每一个 clusters 绘制了 2-3 个强标记基因。
 
 ```{r fig.height=3.5, fig.width=3.5}
-Idents(immune.combined) <- factor(Idents(immune.combined), levels = c("HSPC", "Mono/Mk Doublets",
-    "pDC", "Eryth", "Mk", "DC", "CD14 Mono", "CD16 Mono", "B Activated", "B", "CD8 T", "NK", "T activated",
-    "CD4 Naive T", "CD4 Memory T"))
-markers.to.plot <- c("CD3D", "CREM", "HSPH1", "SELL", "GIMAP5", "CACYBP", "GNLY", "NKG7", "CCL5",
-    "CD8A", "MS4A1", "CD79A", "MIR155HG", "NME1", "FCGR3A", "VMO1", "CCL2", "S100A9", "HLA-DQA1",
-    "GPR183", "PPBP", "GNG11", "HBA2", "HBB", "TSPAN13", "IL3RA", "IGJ", "PRSS57")
+Idents(immune.combined) <- factor(Idents(immune.combined), levels = c("HSPC", "Mono/Mk Doublets", "pDC", "Eryth", "Mk", "DC", "CD14 Mono", "CD16 Mono", "B Activated", "B", "CD8 T", "NK", "T activated", "CD4 Naive T", "CD4 Memory T"))
+markers.to.plot <- c("CD3D", "CREM", "HSPH1", "SELL", "GIMAP5", "CACYBP", "GNLY", "NKG7", "CCL5", "CD8A", "MS4A1", "CD79A", "MIR155HG", "NME1", "FCGR3A", "VMO1", "CCL2", "S100A9", "HLA-DQA1", "GPR183", "PPBP", "GNG11", "HBA2", "HBB", "TSPAN13", "IL3RA", "IGJ", "PRSS57")
 DotPlot(immune.combined, features = markers.to.plot, cols = c("blue", "red"), dot.scale = 8, split.by = "stim") +
     RotatedAxis()
 ```

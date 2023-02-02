@@ -8,6 +8,11 @@ R/8.WGCNA/FemaleLiver-Data
 R/8.WGCNA/*.RData
 R/8.WGCNA/geneInfo.csv
 
+R/11.Seurat/hg19
+R/11.Seurat/.Rhistory
+R/11.Seurat/pbmc_tutorial.rds
+R/11.Seurat/pbmc3k_final.rds
+
 
 # python
 python/1.anndata/.ipynb_checkpoints
